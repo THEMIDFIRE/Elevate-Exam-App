@@ -112,7 +112,7 @@ export default function EditExamComponent() {
             if (typeof data.duration === 'number' && Number.isFinite(data.duration)) {
                 updatedExamPayload.duration = data.duration
             }
-            if (uploadedImg?.url) updatedExamPayload.image = uploadedImg.url
+            updatedExamPayload.image = uploadedImg?.url ?? examImg
 
             if (Object.keys(updatedExamPayload).length === 0) {
                 throw new Error('No changes to update')
