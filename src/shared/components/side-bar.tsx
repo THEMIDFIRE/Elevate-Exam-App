@@ -16,16 +16,10 @@ export default function SideBar({ role }: { role: string }) {
             return res
         }
     })
-
+    if (!data) return null
     const user = data
 
-    return (
-        <>
-            {role === 'ADMIN' && pathname.startsWith('/dashboard') ?
-                <AdminSideNav user={user} isLoading={isLoading} />
-                :
-                <UserSideNav user={user} isLoading={isLoading} />
-            }
-        </>
-    )
+    return role === 'ADMIN' && pathname.startsWith('/dashboard') ?
+        <AdminSideNav user={user} isLoading={isLoading} />
+    : <UserSideNav user={user} isLoading={isLoading} />
 }

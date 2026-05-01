@@ -43,27 +43,22 @@ export default function LoginPage() {
 
     const { mutate: userLogin, isPending } = useMutation({
         mutationFn: async (data: FormData) => {
-            const callbackUrl = new URLSearchParams(window.location.search).get('callbackUrl') || '/'
             const res = await signIn('credentials', {
                 username: data.username,
                 password: data.password,
                 redirect: false,
-                callbackUrl,
             })
             if (res?.error) {
                 throw new Error(res.error)
             }
-            if (!res?.ok) {
-                throw new Error('Login failed')
-            }
-            return res.url || callbackUrl
         },
-        onError: (err: Error) => {
+        onError: (err) => {
             setError(err.message)
         },
-        onSuccess: (redirectUrl) => {
+        onSuccess: () => {
             toast.success('Login successful!')
-            window.location.assign(redirectUrl)
+            const callbackUrl = new URLSearchParams(window.location.search).get('callbackUrl') || '/'
+            location.href = callbackUrl
         }
     })
 
