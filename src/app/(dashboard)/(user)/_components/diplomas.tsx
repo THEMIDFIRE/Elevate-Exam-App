@@ -39,10 +39,10 @@ export default function Diplomas() {
                     <Link href={`/diplomas/${diploma.title}?diplomaId=${diploma.id}`} key={diploma.id}>
                         <Card className='py-0 rounded-none group/diploma'>
                             <div className='relative w-full h-80 overflow-hidden'>
-                                {diploma.image && <Image src={diploma.image} fill alt={diploma.title} className='group-hover/diploma:scale-110 transition duration-200' />}
+                                {diploma.image && <Image src={diploma.image} fill alt={diploma.title} className='group-hover/diploma:scale-110 transition duration-200 object-cover' />}
                                 <div className='bg-blue-600/75 *:text-white p-4 space-y-1 backdrop-blur-md absolute bottom-2.5 inset-x-2.5'>
                                     <CardTitle className='text-md font-semibold'>{diploma.title}</CardTitle>
-                                    <CardDescription className='text-sm font-normal'>{diploma.description}</CardDescription>
+                                    <CardDescription className='text-sm font-normal h-10 overflow-hidden group-hover/diploma:h-30 transition-all duration-200'>{diploma.description}</CardDescription>
                                 </div>
                             </div>
                         </Card>
