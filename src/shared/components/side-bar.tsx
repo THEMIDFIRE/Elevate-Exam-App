@@ -17,7 +17,7 @@ export default function SideBar({ role }: { role: string }) {
         }
     })
 
-    const user = data?.payload.user
+    const user = data
 
     return (
         <>
