@@ -13,7 +13,6 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
-import { useRouter } from 'next/navigation'
 
 
 const schema = z.object({
@@ -32,7 +31,6 @@ const InterFont = Inter({
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState<string | null>(null)
-    const router = useRouter()
 
 
     const { register, handleSubmit, setFocus, formState: { errors } } = useForm<FormData>({
@@ -58,15 +56,14 @@ export default function LoginPage() {
             if (!res?.ok) {
                 throw new Error('Login failed')
             }
-            return callbackUrl
+            return res.url || callbackUrl
         },
         onError: (err: Error) => {
             setError(err.message)
         },
-        onSuccess: (callbackUrl) => {
+        onSuccess: (redirectUrl) => {
             toast.success('Login successful!')
-            router.replace(callbackUrl)
-            router.refresh()
+            window.location.assign(redirectUrl)
         }
     })
 
