@@ -7,6 +7,7 @@ import { ChangePass } from '@/shared/lib/api/account/account.api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { Eye, EyeOff } from 'lucide-react'
+import { signOut } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -47,6 +48,7 @@ export default function ChangePassword() {
     },
     onSuccess: (res) => {
       toast.success(res?.message)
+      signOut({ callbackUrl: '/' })
     },
     onError: (error) => {
       toast.error((error as Error).message)
