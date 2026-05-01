@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { useRouter } from 'next/navigation'
 
 
 const schema = z.object({
@@ -31,6 +32,7 @@ const InterFont = Inter({
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const router = useRouter()
 
 
     const { register, handleSubmit, setFocus, formState: { errors } } = useForm<FormData>({
@@ -58,7 +60,7 @@ export default function LoginPage() {
         onSuccess: () => {
             toast.success('Login successful!')
             const callbackUrl = new URLSearchParams(window.location.search).get('callbackUrl') || '/'
-            location.href = callbackUrl
+            router.push(callbackUrl)
         }
     })
 
