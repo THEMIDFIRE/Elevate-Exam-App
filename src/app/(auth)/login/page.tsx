@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 
 const schema = z.object({
@@ -33,7 +33,6 @@ export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const router = useRouter()
-    const params = useSearchParams()
 
 
     const { register, handleSubmit, setFocus, formState: { errors } } = useForm<FormData>({
@@ -46,7 +45,7 @@ export default function LoginPage() {
 
     const { mutate: userLogin, isPending } = useMutation({
         mutationFn: async (data: FormData) => {
-            const callbackUrl = params.get('callbackUrl') || '/'
+            const callbackUrl = new URLSearchParams(window.location.search).get('callbackUrl') || '/'
             const res = await signIn('credentials', {
                 username: data.username,
                 password: data.password,
