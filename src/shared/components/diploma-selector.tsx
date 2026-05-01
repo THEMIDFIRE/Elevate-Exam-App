@@ -2,8 +2,8 @@
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from '@/shared/components/ui/combobox'
 import { useQuery } from '@tanstack/react-query'
 import { FormEvent, useMemo, useState } from 'react'
-import { getAdminExams } from '@/app/(dashboard)/(admin)/dashboard/exams/api/exams.api'
-import { getAllDiplomas } from '../lib/api/diplomas/allDiplomas.api'
+import { getDiplomas } from '../lib/api/diplomas/allDiplomas.api'
+import { getExams } from '../lib/api/exams/exams.api'
 
 type DiplomaOption = {
     id: string
@@ -17,7 +17,7 @@ export default function DiplomaSelectorFilter() {
 
     const { data: diplomasData, isLoading: loadingDiplomas, isError: diplomasError } = useQuery({
         queryKey: ['diplomasFilter'],
-        queryFn: () => getAllDiplomas()
+        queryFn: () => getDiplomas(10, 1)
     })
 
     const diplomaOptions = useMemo<DiplomaOption[]>(() => {
@@ -27,12 +27,11 @@ export default function DiplomaSelectorFilter() {
 
     const {
         data: examsData,
-        // refetch: refetchExams,
         isFetching: fetchingExams,
         isError: examsError
     } = useQuery({
         queryKey: ['testExamsByDiploma', appliedDiplomaId],
-        queryFn: () => getAdminExams(appliedDiplomaId ?? '', 1, null, null, null),
+        queryFn: () => getExams(10, 1, appliedDiplomaId ?? undefined),
         enabled: false
     })
 
