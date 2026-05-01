@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 
 const schema = z.object({
@@ -33,6 +33,7 @@ export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const router = useRouter()
+    const params = useSearchParams()
 
 
     const { register, handleSubmit, setFocus, formState: { errors } } = useForm<FormData>({
@@ -45,23 +46,28 @@ export default function LoginPage() {
 
     const { mutate: userLogin, isPending } = useMutation({
         mutationFn: async (data: FormData) => {
+            const callbackUrl = params.get('callbackUrl') || '/'
             const res = await signIn('credentials', {
                 username: data.username,
                 password: data.password,
-                redirect: true,
-                callbackUrl: '/',
+                redirect: false,
+                callbackUrl,
             })
             if (res?.error) {
                 throw new Error(res.error)
             }
+            if (!res?.ok) {
+                throw new Error('Login failed')
+            }
+            return callbackUrl
         },
-        onError: (err) => {
+        onError: (err: Error) => {
             setError(err.message)
         },
-        onSuccess: () => {
+        onSuccess: (callbackUrl) => {
             toast.success('Login successful!')
-            const callbackUrl = new URLSearchParams(window.location.search).get('callbackUrl') || '/'
-            router.push(callbackUrl)
+            router.replace(callbackUrl)
+            router.refresh()
         }
     })
 
