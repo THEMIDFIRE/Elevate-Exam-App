@@ -66,7 +66,7 @@ export default function AdminAuditlogComponent({ role }: { role: string }) {
                     </Button>
                 </div>
 
-                {role !== 'SUPER ADMIN' && <div>
+                {role === 'SUPER ADMIN' && <div>
                     <Dialog>
                         <DialogTrigger asChild>
                             <Button variant={"destructive"}
