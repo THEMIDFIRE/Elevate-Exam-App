@@ -129,10 +129,7 @@ return (
                     {(() => {
                         const { time, date } = formatAuditCreatedAt(createdAt as unknown as Date | string)
                         return (
-                            <p className="text-sm">
-                                <span className="block">{time}</span>
-                                <span className="block">{date}</span>
-                            </p>
+                            <p className="text-sm">{time} | {date}</p>
                         )
                     })()}
                 </div>
